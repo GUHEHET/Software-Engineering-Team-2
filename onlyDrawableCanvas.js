@@ -7,9 +7,10 @@ var pos = {
 var canvas, ctx;
 
 window.onload = function(){
-	canvas = document.getElementById("canvas");
+	canvas = document.getElementById("drawCanvas");
 	ctx = canvas.getContext("2d");
 
+	ctx.lineWidth = 10; //Ææ ±½±â Á¶Àý
 	canvas.addEventListener("mousedown", listener);
 	canvas.addEventListener("mousemove", listener);
 	canvas.addEventListener("mouseup", listener);

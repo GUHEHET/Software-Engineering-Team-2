@@ -1,0 +1,70 @@
+<!-- canvas.html -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Canvas Painter</title>
+</head>
+<body>
+	<h2>Draw one number 0 to 9 on the below painter</h2>
+	<hr>
+	<div>
+		<canvas id="drawCanvas" width="280" height="280" style=" position: relative; border: 1px solid #000;"></canvas>
+		<br>
+		<button onclick="clearPainter();"> 그림판 초기화 </button>&nbsp&nbsp&nbsp
+		<button onclick="partShot()">이미지 추출 및 캡쳐</button>
+		<img id='myImage' style="width:28px; height:28px; position:absolute; left:300px; top:330px;">
+		<img id ='transImage' width="280" height="280" style=" position:absolute; left:340px; top:82px">
+	</div>
+
+	<div>
+		<form id="formId" action = "http://localhost:80/fileUpload" method = "POST" enctype = "multipart/form-data">
+		<br>
+		<input type ="hidden" name = "image" value='myImage'>
+		</form> 
+	</div>
+
+	<!-- JavaScript -->
+	<script src="html2canvas.js"></script>
+	<script src="onlyDrawableCanvas.js"></script>	
+	<script type="text/javascript">
+		function clearPainter(){
+			canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+		}
+
+		function saveAs(uri, filename) {
+			var link = document.createElement('a');
+			if (typeof link.download === 'string') {
+				link.href = uri;
+				link.download = filename;
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				}
+			 else {
+				window.open(uri);
+			}
+		}
+
+		function partShot(){
+			var myImage = document.getElementById('myImage');
+			myImage.src = canvas.toDataURL("image/png");
+
+			html2canvas(document.getElementById('myImage'))
+			.then(function (canvas) {
+				saveAs(canvas.toDataURL(), 'file-name.jpg');
+				var transImage = document.getElementById('transImage');
+				transImage.src = canvas.toDataURL("image/png");
+				this.document.getElementById("formId").submit();
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	</script>
+
+	<hr>
+	<h2>Reference Page</h2>
+	<a href="https://rogiry.tistory.com/98" target="_blank">Painter 구현 함수</a>
+	<a href="https://m.mkexdev.net/106" target="_blank">이미지 변환 함수</a>
+	<a href="https://minaminaworld.tistory.com/89" target="_blank">이미지 캡쳐 함수</a>
+</body>
+</html>
